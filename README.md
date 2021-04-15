@@ -9,9 +9,9 @@ It requires sending a no data write request, to handles (0x03, 0x04, or 0x05). T
 
 So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages). I may expand this for the eprom settings at 0x05.
 
-I also have to Thornwave bluetooth battery monitors. One for the solar charge controller and the other for an inverter. These are much simplier as it only requires and a readCharacteristic(0x15) and returns the data. 
+I also use two Thornwave bluetooth battery monitors. One for the solar charge controller and the other for an inverter. These are much simplier as it only requires a read handle(0x15) and returns the data.
 
-The program is with the MAC address, collection interval and monitor name - bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
+The program is initiated with the MAC address, collection interval and monitor name - bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
 
-I'm running this on a Raspberry Pi Zero W and used Python 3.9 for this.
+I'm running this on a RaspberryPi Zero W and used Python 3.9 for this.
 
