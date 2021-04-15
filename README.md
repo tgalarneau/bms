@@ -11,3 +11,7 @@ So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages). I m
 
 I also have to Thornwave bluetooth battery monitors. One for the solar charge controller and the other for an inverter. These are much simplier as it only requires and a readCharacteristic(0x15) and returns the data. 
 
+The program is with the MAC address, collection interval and monitor name - bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
+
+I'm running this on a Raspberry Pi Zero W and used Python 3.9 for this.
+
