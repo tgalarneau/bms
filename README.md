@@ -17,3 +17,5 @@ bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
 
 I'm running this on a RaspberryPi Zero W and used Python 3.9.
 
+![Screenshot](bms.png)
+
