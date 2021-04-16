@@ -66,13 +66,13 @@ def cellinfo(data):
 				
 		message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i,%0i,%0i" % (meter,volts,watts,amps,remain,capacity))
 		print(message)
-		#	sock.send(message.encode('utf8'))		# not sending mdate (manfacture date)
+		#sock.send(message.encode('utf8'))		# not sending mdate (manfacture date)
 		message = ("meter,c01,c02,c03,c04,c05,c06,c07,c08\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c01,c02,c03,c04,c05,c06,c07,c08))
 		print(message)
-		#	sock.send(message.encode('utf8'))
+		#sock.send(message.encode('utf8'))
 		message = ("meter,c09,c10,c11,c12,c13,c14,c15,c16\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c09,c10,c11,c12,c13,c14,c15,c16))
 		print(message)
-	#	sock.send(message.encode('utf8'))
+		#sock.send(message.encode('utf8'))
 
 	elif infodata.find('77') != -1 and len(infodata) == 36:	
 		infodata = (infodata.removesuffix("77"))
@@ -104,7 +104,7 @@ def cellvolts(data):
 		cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16 = struct.unpack_from('>HHHHHHHH', celldata, i)
 		message = ("meter,cell9,cell10,cell11,cell12,cell13,cell14,cell15,cell16\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,cell9,cell10,cell11,cell12,cell13,cell14,cell15,cell16))
 		print(message)
-	#	sock.send(message.encode('utf8'))
+		#sock.send(message.encode('utf8'))
 
 class MyDelegate(btle.DefaultDelegate):
 	def __init__(self):
