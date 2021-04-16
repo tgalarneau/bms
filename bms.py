@@ -63,8 +63,7 @@ def cellinfo(data):
 		c14 = int(bal1[13:14])
 		c15 = int(bal1[14:15])
 		c16 = int(bal1[15:16])   
-				
-		message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i,%0i,%0i" % (meter,volts,watts,amps,remain,capacity))
+		message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i" % (meter,volts,amps,watts,remain,capacity,cycles))		
 		print(message)
 		#sock.send(message.encode('utf8'))		# not sending mdate (manfacture date)
 		message = ("meter,c01,c02,c03,c04,c05,c06,c07,c08\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c01,c02,c03,c04,c05,c06,c07,c08))
@@ -83,7 +82,7 @@ def cellinfo(data):
 		temp2 = (temp2-2731)/10					# fet 0011 = 3  both on - 0010 = 2 disch on - 0001 = 1 chrg on - 0000 = 0 both off
 		temp3 = (temp3-2731)/10
 		temp4 = (temp4-2731)/10
-		message = ("meter,protect,percent,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
+		message = ("meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
 		print(message)
 		#sock.send(message.encode('utf8'))          # not sending version number or number of temp sensors
 
