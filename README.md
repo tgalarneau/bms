@@ -19,5 +19,5 @@ I'm running this on a RaspberryPi Zero W and used Python 3.9.
 
 ![Screenshot](bms.png)
 
-For Thornwave data see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. As I am using linux I am utilizing system services, with automatic restaring if connection lost, for the data collection.
+For Thornwave data see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. As I am using linux I am utilizing system services, with automatic restarting if connection lost, for the data collection.
 
