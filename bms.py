@@ -47,22 +47,22 @@ def cellinfo(data):
 		watts = volts*amps  	# adding watts field for dbase
 						    
 		bal1 = (format(balance1, "b").zfill(16))      # using balance1 bits for 16 cells - (balance2 is for next 17-32 cells)
-		c01 = int(bal1[0:1])
-		c02 = int(bal1[1:2])
-		c03 = int(bal1[2:3])
-		c04 = int(bal1[3:4])
-		c05 = int(bal1[4:5])
-		c06 = int(bal1[5:6])
-		c07 = int(bal1[6:7])
-		c08 = int(bal1[7:8])
-		c09 = int(bal1[8:9])
-		c10 = int(bal1[9:10])
-		c11 = int(bal1[10:11])
-		c12 = int(bal1[11:12])
-		c13 = int(bal1[12:13])        
-		c14 = int(bal1[13:14])
-		c15 = int(bal1[14:15])
-		c16 = int(bal1[15:16])   
+		c09 = int(bal1[0:1])
+		c10 = int(bal1[1:2])
+		c11 = int(bal1[2:3])
+		c12 = int(bal1[3:4])
+		c13 = int(bal1[4:5])
+		c14 = int(bal1[5:6])
+		c15 = int(bal1[6:7])
+		c16 = int(bal1[7:8])
+		c01 = int(bal1[8:9])
+		c02 = int(bal1[9:10])
+		c03 = int(bal1[10:11])
+		c04 = int(bal1[11:12])
+		c05 = int(bal1[12:13])        
+		c06 = int(bal1[13:14])
+		c07 = int(bal1[14:15])
+		c08 = int(bal1[15:16])   
 		message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i" % (meter,volts,amps,watts,remain,capacity,cycles))		
 		print(message)
 		#sock.send(message.encode('utf8'))		# not sending mdate (manfacture date)
@@ -84,7 +84,7 @@ def cellinfo(data):
 		temp4 = (temp4-2731)/10
 		message = ("meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
 		print(message)
-		#sock.send(message.encode('utf8'))          # not sending version number or number of temp sensors
+		#sock.send(message.encode('utf8'))          # not sending protect, version number or number of temp sensors
 
 def cellvolts(data):
 	celldata = data
@@ -122,7 +122,7 @@ class MyDelegate(btle.DefaultDelegate):
 		elif text_string.find('77') != -1 and len(text_string) == 36:	 # x03
 			cellinfo(text_string)		
 
-# Connect to bms. Try twice, then fail 
+# Connect to bms - 2 tries
 try:
 	bms = bluepy.btle.Peripheral(args.BLEaddress)
 except BTLEException as ex:
