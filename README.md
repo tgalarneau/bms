@@ -3,7 +3,7 @@ JBD BMS and Thornwave bluetooth data monitoring
 
 This project is for using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS and formatting it to cvs data and writing it to a unix socket for Telegraf's Socket Listener Input Plugin. The data then preceeds to Influxdb and Grafana for graphing.
 
-The JBD BMS uses serial or bluetooth to broadcast its data. This project is for the bluetooth interface. The way this is done is not standard as in just reading requests or turning on notifications to receive ongoing data.
+The JBD BMS uses serial or bluetooth to access its data. This project is for the bluetooth interface. The way this is done is not standard as in just reading requests or turning on notifications to receive ongoing data.
 
 It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
 
