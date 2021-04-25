@@ -1,14 +1,14 @@
-
 [Unit]
-Description=solar Service
+Description=bms Service
 Wants=network.target
 After=network.target
 
 [Service]
 ExecStartPre=/bin/sleep 10
-ExecStart=/home/pi/meters-sock.py -b CF:E5:F3:D1:9F:87 -i 30 -m solar
+ExecStart=/home/pi/bms.py -b A4:C1:38:FF:95:BE -i 7 -m bms
 Restart=always
 
 [Install]
 WantedBy=multi-user.target
+
 
