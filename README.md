@@ -22,3 +22,5 @@ I'm running this on a RaspberryPi Zero W and used Python 3.9. As Debian only has
 For Thornwave data see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. As I am using linux I am utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost.
 
 ![Screenshot](thornwave.png)
+
+The meters-sock.py is for the Thronwave meters. For the JBD bms data only - bms.py alone is required. Just discover your JBD mac address. I use hcitool lescan to find this. I have program only prints out the data for testing until the sock commands are uncommented and Telegraf is setup on the sock.
