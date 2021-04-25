@@ -15,7 +15,7 @@ The program is initiated with a MAC address (-b), collection interval (-i) and m
 
 bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
 
-I'm running this on a RaspberryPi Zero W and used Python 3.9. As Debian only has version 3.7, it required building 3.9 from source. 
+I'm running this on a RaspberryPi Zero W and used Python 3.9. As Debian only has version 3.7, it required building 3.9 from source. This was only necessary because I used because (In Python 3.9, new string methods removeprefix() and removesuffix() are introduced) and was too lazy to revert to earlier method.
 
 ![Screenshot](jbdbms.png)
 
