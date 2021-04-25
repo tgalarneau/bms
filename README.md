@@ -23,4 +23,6 @@ For Thornwave data see https://github.com/mkjanke/ThornwavePy I have only modifi
 
 ![Screenshot](thornwave.png)
 
-The meters-sock.py is for the Thronwave meters. For the JBD bms data only - bms.py alone is required. Just discover your JBD mac address. I use hcitool lescan to find this. The program only prints out the data for testing until the sock commands are uncommented and Telegraf is setup on the sock to deliver it to influxdb.
+The meters-sock.py is for the Thronwave meters. For the JBD bms data only - bms.py alone is required. Just discover your JBD mac address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The program only prints out the data for testing until the sock commands are uncommented and Telegraf is setup on the sock to deliver it to influxdb. 
+
+I have only tested and used with linux but this should be okay from any python ready laptop within bluetooth range. I use the RaspberryPi zero W for 24/7 use and proximity to device bluetooth signal.
