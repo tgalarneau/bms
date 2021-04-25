@@ -104,7 +104,7 @@ def cellinfo(data):
 
 		message = ("meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
 		print(message)
-		#sock.send(message.encode('utf8'))          # not sending protect, version number or number of temp sensors
+		#sock.send(message.encode('utf8'))          # not sending version number or number of temp sensors
 
 def cellvolts(data):
 	global cells1
@@ -170,6 +170,7 @@ bms.setDelegate(MyDelegate())
 
 while True:
 # write empty data to 0x15 for notification request   --  address x03 handle for info & x04 handle for cell voltage
+# using waitForNotifications(5) as less than 5 seconds has caused some missed notifications
 	#print('sending')
 	result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x03\x00\xff\xfd\x77',False)
 	bms.waitForNotifications(5)
