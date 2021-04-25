@@ -25,4 +25,6 @@ For Thornwave data see https://github.com/mkjanke/ThornwavePy I have only modifi
 
 For the JBD bms data only - bms.py alone is required. Just discover your JBD mac address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. This program only prints out the data for testing until the sock commands are uncommented and Telegraf is setup on the sock to deliver it to influxdb. 
 
-I have only tested and used with linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi zero W for 24/7 and proximity to device bluetooth signal to feed a webserver.
+I have only tested and used with linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi zero W for 24/7 and proximity to device's bluetooth signal and feed a webserver to give access to any device on my lan. 
+
+Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
