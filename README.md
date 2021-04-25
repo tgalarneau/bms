@@ -11,7 +11,7 @@ So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages) for 
 
 I also use two Thornwave bluetooth battery monitors. One for the solar charge controller and the other for an inverter. These are much simpler only requiring a read request at (0x15) which returns the data for processing.
 
-The program is initiated with a MAC address(-b), collection interval(-i) and monitor name(-m).
+The program is initiated with a MAC address (-b), collection interval (-i) and monitor name (-m).
 
 bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
 
