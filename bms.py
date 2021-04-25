@@ -19,6 +19,8 @@ parser.add_argument("-b", "--BLEaddress", help="BT BLE Address", required=True)
 parser.add_argument("-i", "--interval", type=int, help="data interval", required=True)
 parser.add_argument("-m", "--meter", help="Meter name", required=True)
 args = parser.parse_args() 
+z = args.interval
+meter = args.meter	
 
 def signal_handler(signal, frame):
     print('Stopping...')
@@ -35,7 +37,7 @@ telegraf_socket = "/tmp/telegraf.sock"
 
 def cellinfo(data):
 	infodata = data
-	if infodata.find('dd03001f') != -1:
+	if infodata.find('dd03001f') != -1 and len(infodata) == 40:
 		infodata = (infodata.removeprefix("dd03001f"))
 		infodata = (binascii.unhexlify(infodata))
 		i = 0
@@ -45,24 +47,23 @@ def cellinfo(data):
 		capacity = capacity/100
 		remain = remain/100
 		watts = volts*amps  	# adding watts field for dbase
-						    
 		bal1 = (format(balance1, "b").zfill(16))      # using balance1 bits for 16 cells - (balance2 is for next 17-32 cells)
-		c09 = int(bal1[0:1])
-		c10 = int(bal1[1:2])
-		c11 = int(bal1[2:3])
-		c12 = int(bal1[3:4])
-		c13 = int(bal1[4:5])
-		c14 = int(bal1[5:6])
-		c15 = int(bal1[6:7])
-		c16 = int(bal1[7:8])
-		c01 = int(bal1[8:9])
-		c02 = int(bal1[9:10])
-		c03 = int(bal1[10:11])
-		c04 = int(bal1[11:12])
-		c05 = int(bal1[12:13])        
-		c06 = int(bal1[13:14])
-		c07 = int(bal1[14:15])
-		c08 = int(bal1[15:16])   
+		c16 = int(bal1[0:1])
+		c15 = int(bal1[1:2])
+		c14 = int(bal1[2:3])
+		c13 = int(bal1[3:4])
+		c12 = int(bal1[4:5])
+		c11 = int(bal1[5:6])
+		c10 = int(bal1[6:7])
+		c09 = int(bal1[7:8])
+		c08 = int(bal1[8:9])
+		c07 = int(bal1[9:10])
+		c06 = int(bal1[10:11])
+		c05 = int(bal1[11:12])
+		c04 = int(bal1[12:13])        
+		c03 = int(bal1[13:14])
+		c02 = int(bal1[14:15])
+		c01 = int(bal1[15:16])  
 		message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i" % (meter,volts,amps,watts,remain,capacity,cycles))		
 		print(message)
 		#sock.send(message.encode('utf8'))		# not sending mdate (manfacture date)
@@ -82,17 +83,39 @@ def cellinfo(data):
 		temp2 = (temp2-2731)/10					# fet 0011 = 3  both on - 0010 = 2 disch on - 0001 = 1 chrg on - 0000 = 0 both off
 		temp3 = (temp3-2731)/10
 		temp4 = (temp4-2731)/10
+		prt = (format(protect, "b").zfill(16))		# protection states
+		ovp = int(prt[0:1])
+		uvp = int(prt[1:2])
+		bov = int(prt[2:3])
+		buv = int(prt[3:4])
+		cot = int(prt[4:5])
+		cut = int(prt[5:6])
+		dot = int(prt[6:7])
+		dut = int(prt[7:8])
+		coc = int(prt[8:9])
+		duc = int(prt[9:10])
+		sc = int(prt[10:11])
+		ic = int(prt[11:12])        
+		fet = int(prt[12:13])
+		
+		message = ("meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,fet\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,fet))
+		print(message)
+		#sock.send(message.encode('utf8')) 
+
 		message = ("meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
 		print(message)
 		#sock.send(message.encode('utf8'))          # not sending protect, version number or number of temp sensors
 
 def cellvolts(data):
+	global cells1
 	celldata = data
-	if celldata.find('dd04') != -1:
+	if celldata.find('dd04') != -1 and len(celldata) == 40:
 		celldata = (celldata.removeprefix("dd040020"))
 		celldata = (binascii.unhexlify(celldata))
 		i = 0
 		cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8 = struct.unpack_from('>HHHHHHHH', celldata, i)
+		cells1 = [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8]
+		
 		message = ("meter,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8))
 		print(message)
 		#sock.send(message.encode('utf8')
@@ -101,10 +124,22 @@ def cellvolts(data):
 		celldata = (binascii.unhexlify(celldata))
 		i = 0
 		cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16 = struct.unpack_from('>HHHHHHHH', celldata, i)
+		
 		message = ("meter,cell9,cell10,cell11,cell12,cell13,cell14,cell15,cell16\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,cell9,cell10,cell11,cell12,cell13,cell14,cell15,cell16))
 		print(message)
 		#sock.send(message.encode('utf8'))
+		
+		# adding cells min, max and delta
+		cells2 = [cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16]	
+		allcells = cells1 + cells2
+		cellmin = min(allcells)
+		cellmax = max(allcells)
+		delta = cellmax-cellmin
+		message = ("meter,cellmin,cellmax,delta\r\n%s,%0i,%0i,%0i" % (meter,cellmin,cellmax,delta))
+		print(message)
+		#sock.send(message.encode('utf8'))
 
+		
 class MyDelegate(btle.DefaultDelegate):
 	def __init__(self):
 		btle.DefaultDelegate.__init__(self)
@@ -125,19 +160,20 @@ class MyDelegate(btle.DefaultDelegate):
 # Connect to bms - 2 tries
 try:
 	bms = bluepy.btle.Peripheral(args.BLEaddress)
+	print('connect 1')
 except BTLEException as ex:
 	time.sleep(10)
 	bms = bluepy.btle.Peripheral('A4:C1:38:FF:95:BE')
+	print('connect 2')
 
-z = args.interval
-meter = args.meter		
 bms.setDelegate(MyDelegate())
 
 while True:
 # write empty data to 0x15 for notification request   --  address x03 handle for info & x04 handle for cell voltage
+	#print('sending')
 	result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x03\x00\xff\xfd\x77',False)
-	bms.waitForNotifications(1)
+	bms.waitForNotifications(5)
 	result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x04\x00\xff\xfc\x77',False)
-	bms.waitForNotifications(1)
+	bms.waitForNotifications(5)
 	time.sleep(z)
    
