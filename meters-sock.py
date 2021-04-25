@@ -51,12 +51,9 @@ import struct
 import time
 import sys
 import signal
-#from datetime import datetime
-#from datetime import timedelta
 from bluepy.btle import Peripheral, BTLEException
 
 # Slurp up command line arguments
-__author__ = 'Michael Janke'
 parser = argparse.ArgumentParser(description='Thornwave BT DCPM slurper. Reads and outputs BT DCPM data')
 group = parser.add_mutually_exclusive_group()
 parser.add_argument("-b", "--BLEaddress", help="BT DCPM BLE Address", required=True)
@@ -92,8 +89,6 @@ else:
   if args.verbose:
     print(result)
 
-  #delta = str(timedelta(seconds=TimeSinceStart))
-         
 z = args.interval
 meter = args.meter         
          
@@ -109,7 +104,7 @@ while True:
 	PowerMeter = PowerMeter/1000
 	ChargeMeter = ChargeMeter/1000
 	
-# Format and send message to socket - not sending V2Volts, TimeSinceStart, Currentime 
+# Format and send message to socket - not sending V2Volts, TimeSinceStart, Currentime as influxdb as timestamp
 	message = ("meter,volts,amps,watts,temp,kwh,ah,peak\r\n%s,%0.3f,%0.2f,%0.2f,%0.1f,%0.4f,%0.2f,%0.2f" % (meter,V1Volts,Current,Power,Temperature,PowerMeter,ChargeMeter,PeakCurrent))
 	print(message)
 	#sock.send(message.encode('utf8'))
