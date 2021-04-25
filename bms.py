@@ -83,7 +83,7 @@ def cellinfo(data):
 		temp2 = (temp2-2731)/10					# fet 0011 = 3  both on - 0010 = 2 disch on - 0001 = 1 chrg on - 0000 = 0 both off
 		temp3 = (temp3-2731)/10
 		temp4 = (temp4-2731)/10
-		prt = (format(protect, "b").zfill(16))		# protection states
+		prt = (format(protect, "b").zfill(16))		# protection status bits
 		ovp = int(prt[0:1])
 		uvp = int(prt[1:2])
 		bov = int(prt[2:3])
