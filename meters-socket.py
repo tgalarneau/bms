@@ -55,7 +55,6 @@ import signal
 from bluepy.btle import Peripheral, BTLEException
 
 # Slurp up command line arguments
-__author__ = 'Michael Janke'
 parser = argparse.ArgumentParser(description='Thornwave BT DCPM slurper. Reads and outputs BT DCPM data')
 group = parser.add_mutually_exclusive_group()
 parser.add_argument("-b", "--BLEaddress", help="BT DCPM BLE Address", required=True)
