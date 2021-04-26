@@ -3,7 +3,7 @@ JBD BMS and Thornwave bluetooth data monitoring
 
 bms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS and then processing it for applications. 
 
-The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way this was implemented is not standard as in sending read requests or turning on notifications to receive data.
+The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way JBD implemented is not standard as in sending read requests or turning on notifications to receive data.
 
 It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
 
