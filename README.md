@@ -11,7 +11,7 @@ bms.py alone is required. Just discover your JBD BLE address. I use hcitool lesc
 
 bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
 
-This program only prints out the data for testing and viewing until the sock commands are uncommented and Telegraf is setup to listen to socket and deliver it to influxdb. The output format can be changed to your own requirements and application.
+This program only prints out the data for testing and viewing until the sock commands are uncommented and Telegraf is setup to listen to socket and deliver data to influxdb. The output format can be changed to your own requirements and application.
 
 It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS and building data structures then formatting it to cvs data and writing it to a unix socket for Telegraf's Socket Listener Input Plugin. The data then preceeds via Influxdb to Grafana for graphing. Telegraf is the middleman, collecting arriving data and getting it into Influxdb. Other than configuraton files the user only works with Grafana via a browser to access and graph data in dashboards. I included my Grafana bms dashboard json file that can be used as a template as seen below.
 
