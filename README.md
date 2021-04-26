@@ -9,7 +9,7 @@ It requires sending without data, write requests to handles (0x03 and 0x04), i.e
 
 So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages) for system monitoring.
 
-The program is initiated with a device BT address (-b), collection interval (-i) and monitor name (-m).
+The program is initiated with a device BLE address (-b), collection interval (-i) and monitor name (-m).
 
 bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
 
