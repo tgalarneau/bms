@@ -21,8 +21,8 @@ args = parser.parse_args()
 z = args.interval
 meter = args.meter	
 
-telegraf_socket = "/tmp/telegraf.sock"						# The file handler for the Telegraf process.
-#sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)  	# Connection to Telegraf, over a network socket.
+telegraf_socket = "/tmp/telegraf.sock"					# The file handler for the Telegraf process.
+#sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)  		# Connection to Telegraf, over a network socket.
 #sock.connect(telegraf_socket)
 
 def cellinfo(data):			# process pack info
@@ -82,10 +82,10 @@ def cellinfo(data):			# process pack info
 		dot = int(prt[6:7])			# discharge over temp
 		dut = int(prt[7:8])			# discharge under temp
 		coc = int(prt[8:9])			# charge over current
-		duc = int(prt[9:10])		# discharge under current
-		sc = int(prt[10:11])		# short circuit
-		ic = int(prt[11:12])        # ic failure
-		cnf = int(prt[12:13])		# fet config problem
+		duc = int(prt[9:10])			# discharge under current
+		sc = int(prt[10:11])			# short circuit
+		ic = int(prt[11:12])        		# ic failure
+		cnf = int(prt[12:13])			# fet config problem
 		message = ("meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf))
 		print(message)
 		#sock.send(message.encode('utf8')) 
