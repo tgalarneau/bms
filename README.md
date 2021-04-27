@@ -40,6 +40,7 @@ For InfluxDB you need to create a new database and user with password.
 Open with terminal **influx** then type :
 * CREATE DATABASE battery
 * influx user create -n <username> -p <password> -o <org-name>
+* exit
 
 Telegraf configuration requires the following to be added :
 
