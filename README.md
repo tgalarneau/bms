@@ -56,5 +56,5 @@ Telegraf configuration requires the following to be added :
   data_type = "float"  
   csv_tag_columns = ["meter"]
   
-  That's it, now just need to open Grafana via urls used.
+That's it, now just need to open Grafana via urls used. If data doesn't appear on dashboards, can launch Telegraf with --debug option, to make it print out more information about errors in processing of data.
   
