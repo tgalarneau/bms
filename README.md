@@ -45,6 +45,7 @@ influx user create -n <username> -p <password> -o <org-name>
 Telegraf configuration requires the following to be added :
 
 [[outputs.influxdb]]
+
   urls = ["http://127.0.0.1:8086"]
   database = "battery"
   username = "username"
