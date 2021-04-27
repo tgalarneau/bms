@@ -33,7 +33,7 @@ Influx also offers a free cloud version of their database which would give the a
 
 **SETUP**
 
-It's very simple, first install bms.py or meters-socket.py or both, test data output, and then Telegraph, InfluxDB, and Grafana. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
+It's very simple, first install bms.py or meters-socket.py or both, test data output, and then install Telegraph, InfluxDB, and Grafana. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
 
 For InfluxDB you need to create a new database and user with password. 
 
@@ -60,3 +60,7 @@ Telegraf configuration requires the following to be added :
   
 That's it, now just need to open Grafana via urls used. If data doesn't appear on dashboards, can launch Telegraf with --debug option, making it output more information about errors in processing of data.
   
+For linux can automate start and restart via systemd
+
+#systemctl start bms.service
+#systemctl enable bms.servie
