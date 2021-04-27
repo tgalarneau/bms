@@ -37,8 +37,8 @@ It's very simple, first install bms.py or meters-socket.py or both, test data ou
 
 For InfluxDB you need to create a new database and user with password. 
 
-*Open with terminal influx then type :
-*CREATE DATABASE battery
+* Open with terminal influx then type :
+* CREATE DATABASE battery
 
 influx user create -n <username> -p <password> -o <org-name>
 
