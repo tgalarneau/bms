@@ -47,16 +47,25 @@ Telegraf configuration requires the following to be added :
 [[outputs.influxdb]]
 
   urls = ["http://127.0.0.1:8086"]
+  
   database = "battery"
+  
   username = "username"
+  
   password = "password"
 
 [[inputs.socket_listener]]
+  
   service_address = "unixgram:///tmp/telegraf.sock"
+  
   data_format = "csv"
+  
   csv_header_row_count = 1
+  
   name_override = "battpack"
+  
   data_type = "float"  
+  
   csv_tag_columns = ["meter"]
   
 That's it, now just need to open Grafana via urls used. If data doesn't appear on dashboards, can launch Telegraf with --debug option, making it output more information about errors in processing of data.
