@@ -9,7 +9,7 @@ So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages) for 
 
 bms.py alone is required. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The bms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
 
-bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms.
+*bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms*
 
 This program only prints out the data for testing and viewing until the sock commands are uncommented and Telegraf is setup to listen to socket and deliver data to influxdb. The output format can be changed to your own requirements and application.
 
@@ -21,7 +21,7 @@ For my system, I also use two Thornwave bluetooth battery monitors. One for the 
 
 For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. As I am using linux I am utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost. The meters-socket.py is for the Thronwave meters.  I also included a Grafana Thornwave dashboard json file that can be used as a template as seen below.
 
-meters-sock.py -b CF:E5:F3:D1:9F:87 -i 30 -m solar
+*meters-sock.py -b CF:E5:F3:D1:9F:87 -i 30 -m solar*
 
 ![Screenshot](thornwave.png)
 
