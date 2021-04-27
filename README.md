@@ -31,4 +31,30 @@ I have only tested and used with linux but this should be okay from any python a
 
 Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
 
+SETUP
 
+It's very simple, first install bms.py or meters-socket.py or both, test, and then Telegraph, InfluxDB, and Grafana. The default configurations are okay for both InfluxDB and Grafana. 
+For InfluxDb you need to create a new database and user with password. 
+
+Open with influx then type :
+CREATE DATABASE battery
+influx user create -n <username> -p <password> -o <org-name>
+
+Telegraf configuration requires the following to be added :
+
+[[outputs.influxdb]]
+  urls = ["http://127.0.0.1:8086"]
+  database = "battery"
+  username = "username"
+  password = "password"
+
+[[inputs.socket_listener]]
+  service_address = "unixgram:///tmp/telegraf.sock"
+  data_format = "csv"
+  csv_header_row_count = 1
+  name_override = "battpack"
+  data_type = "float"  
+  csv_tag_columns = ["meter"]
+  
+  That's it, now just need to open Grafana via urls used.
+  
