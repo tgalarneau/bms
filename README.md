@@ -60,7 +60,11 @@ Telegraf configuration requires the following to be added :
   
 That's it, now just need to open Grafana via urls used. If data doesn't appear on dashboards, can launch Telegraf with --debug option, making it output more information about errors in processing of data.
   
-For linux can automate start and restart via systemd
+Linux users can automate start and restart via systemd
 
-#systemctl start bms.service
-#systemctl enable bms.servie
+* #systemctl start bms.service
+* #systemctl enable bms.service
+* #systemctl start solar.service
+* #systemctl enable solar.service
+* #systemctl start inverter.service
+* #systemctl enable inverter.service
