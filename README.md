@@ -37,22 +37,17 @@ It's very simple, first install bms.py or meters-socket.py or both, test data ou
 
 For InfluxDB you need to create a new database and user with password. 
 
-* Open with terminal influx then type :
+Open with terminal **influx** then type :
 * CREATE DATABASE battery
-
-influx user create -n <username> -p <password> -o <org-name>
+* influx user create -n <username> -p <password> -o <org-name>
 
 Telegraf configuration requires the following to be added :
 
-[[outputs.influxdb]]
-
-  urls = ["http://127.0.0.1:8086"]
-  
-  database = "battery"
-  
-  username = "username"
-  
-  password = "password"
+* [[outputs.influxdb]]
+* urls = ["http://127.0.0.1:8086"]
+* database = "battery"
+* username = "username"
+* password = "password"
 
 [[inputs.socket_listener]]
   
