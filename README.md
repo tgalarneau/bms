@@ -33,10 +33,12 @@ Influx also offers a free cloud version of their database which would give the a
 
 SETUP
 
-It's very simple, first install bms.py or meters-socket.py or both, test, and then Telegraph, InfluxDB, and Grafana. The default configurations are okay for both InfluxDB and Grafana. 
-For InfluxDb you need to create a new database and user with password. 
+It's very simple, first install bms.py or meters-socket.py or both, test data output, and then Telegraph, InfluxDB, and Grafana. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
 
-Open with influx then type :
+For InfluxDB you need to create a new database and user with password. 
+
+Open with terminal influx then type :
+
 CREATE DATABASE battery
 influx user create -n <username> -p <password> -o <org-name>
 
