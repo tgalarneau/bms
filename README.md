@@ -66,9 +66,9 @@ That's it, now just need to open Grafana via urls used. If data doesn't appear o
   
 Linux users can automate start and restart via systemd
 * copy service files to /etc/systemd/system/
-* #systemctl start bms.service
-* #systemctl enable bms.service
-* #systemctl start solar.service
-* #systemctl enable solar.service
-* #systemctl start inverter.service
-* #systemctl enable inverter.service
+* systemctl start bms.service
+* systemctl enable bms.service
+* systemctl start solar.service
+* systemctl enable solar.service
+* systemctl start inverter.service
+* systemctl enable inverter.service
