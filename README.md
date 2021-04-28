@@ -1,6 +1,7 @@
 # bms
 JBD BMS and Thornwave bluetooth data monitoring 
 
+**JBD**
 bms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS and then processing it for applications. 
 
 The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way JBD implemented this is not standard as in sending read requests or turning on notifications to receive data. It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
@@ -17,6 +18,7 @@ It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS 
 
 ![Screenshot](jbdbms.png)
 
+**Thornwave**
 For my system, I also use two Thornwave bluetooth battery monitors. One for the solar charge controller and the other for an inverter. These are much simpler only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors)
 
 For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. As I am using linux I am utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost. The meters-socket.py is for the Thronwave meters.  I also included a Grafana Thornwave dashboard json file that can be used as a template as seen below.
