@@ -2,15 +2,15 @@
 
 **JBD**
 
-bms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS and then processing it for applications. 
+jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS and then processing it for applications. 
 
 The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way JBD implemented this is not standard as in sending read requests or turning on notifications to receive data. It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
 
 So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages) for system monitoring.
 
-bms.py alone is required. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The bms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
+jbdbms.py alone is required. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The bms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
 
-*bms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms*
+*jbdbms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms*
 
 This program only prints out the data for testing and viewing until the sock commands are uncommented and Telegraf is setup to listen to socket and deliver data to influxdb. The output format can be changed to your own requirements and application.
 
@@ -30,7 +30,7 @@ For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it
 
 **SETUP**
 
-It's very simple, first install *bms.py* or *meters-socket.py* or both, test data output, and then install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
+It's very simple, first install *jbdbms.py* or *meters-socket.py* or both, test data output, and then install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
 
 For InfluxDB you need to create a new database and user with password. 
 
