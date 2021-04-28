@@ -1,4 +1,4 @@
-#JBD BMS and Thornwave bluetooth data monitoring
+# JBD BMS and Thornwave bluetooth data monitoring
 
 **JBD**
 
