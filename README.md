@@ -19,7 +19,7 @@ It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS 
 
 ![Screenshot](jbdbms.png)
 
-**Thornwave**
+**THORNWAVE**
 
 For my system, I also use two Thornwave bluetooth battery monitors. One for the solar charge controller and the other for an inverter. These are much simpler only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors)
 
