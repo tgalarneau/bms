@@ -1,5 +1,4 @@
-# bms
-***JBD BMS and Thornwave bluetooth data monitoring*** 
+# bms  --  *JBD BMS and Thornwave bluetooth data monitoring*
 
 **JBD**
 
@@ -58,7 +57,7 @@ Telegraf configuration requires the following to be added :
   
 That's it, now just need to open Grafana via urls used. If data doesn't appear on dashboards, can launch Telegraf with --debug option, making it output more information about errors in processing of data.
   
-As I am using linux I am utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost.
+Using linux it's utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost.
 * copy service files to /etc/systemd/system/
 * systemctl start bms.service
 * systemctl enable bms.service
