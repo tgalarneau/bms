@@ -8,7 +8,7 @@ The JBD BMS uses either serial or bluetooth to access its data and this project 
 
 So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages) for system monitoring.
 
-jbdbms.py alone is required. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The bms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
+jbdbms.py alone is required. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The jbdbms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
 
 *jbdbms.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms*
 
