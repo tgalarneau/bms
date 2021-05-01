@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+	# code for 8 cell bms
 	# using python 3.9 
 	
 from bluepy.btle import Peripheral, DefaultDelegate, BTLEException
