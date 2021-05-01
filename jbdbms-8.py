@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-	# code for 8 cell bms
+
 	# using python 3.9 
 	
 from bluepy.btle import Peripheral, DefaultDelegate, BTLEException
@@ -33,33 +33,30 @@ class StatsReporter:
         self._encoding = encoding
         self._socket_data = socket_data
         self.create_socket()
-        print(socket_type)
-        print(socket_address)
-        print(socket_data)
+    
     def create_socket(self):
         try:
-            sock = socket.socket(*self._socket_type,self._socket_data)
-            sock.connect(self._socket_address)
+            #sock = socket.socket(*self._socket_type,self._socket_data)
+            sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+            sock.connect("/tmp/telegraf.sock")
             self._sock = sock
             print('Created socket')
         except socket.error as e:
-            print(f'Got error while creating socket: {e}')
+            print(f'Error creating socket: {e}')
 
     def close_socket(self):
         try:
             self._sock.close()
             print('Closed socket')
         except (AttributeError, socket.error) as e:
-            print(f'Got error while closing socket: {e}')
+            print(f'Error closing socket: {e}')
     
     def send_data(self, data):
         try:
-            sent = (data.encode(self._encoding))
+            sent = self._sock.send(data.encode(self._encoding))
             print(data)
-            #print(f'Sending sample data... {sent}')
         except (AttributeError, socket.error) as e:
-            print(f'Got error while sending data on socket: {e}')
-
+            print(f'Error sending data on socket: {e}')
             # attempt to recreate socket on error
             self.close_socket()
             self.create_socket()
