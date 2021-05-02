@@ -9,6 +9,7 @@ import sys
 import time
 import binascii
 import socket
+import atexit
   
  	# Command line arguments
 parser = argparse.ArgumentParser(description='BMS. Writes and receives notify and output data')
