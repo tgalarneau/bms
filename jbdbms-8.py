@@ -129,7 +129,7 @@ def cellvolts(data):			                # process cell voltages
     global cells1
     celldata = data
     if celldata.find('dd04') != -1 and len(celldata) == 40:
-        celldata = (celldata.removeprefix("dd04010"))
+        celldata = (celldata.removeprefix("dd040010"))
         celldata = (binascii.unhexlify(celldata))
         i = 0
         cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8 = struct.unpack_from('>HHHHHHHH', celldata, i)
