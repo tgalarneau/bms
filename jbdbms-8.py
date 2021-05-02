@@ -143,7 +143,7 @@ def cellvolts(data):			                # process cell voltages
         print(message)
         #reporter.send_data(message)
                     
-class MyDelegate(btle.DefaultDelegate):		    # notification responses
+class MyDelegate(DefaultDelegate):		    # notification responses
 	def __init__(self):
 		DefaultDelegate.__init__(self)
 	def handleNotification(self, cHandle, data):
