@@ -2,30 +2,6 @@
 
 #	Copyright 2020 Michael Janke
 #
-#	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation, either version 3 of the License, or
-#	(at your option) any later version.
-#
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
-#
-#	You should have received a copy of the GNU General Public License
-#	along with this program.  If not, see <http://www.gnu.org/licenses/>
-#
-#	Inspiration and data format credit to Stuart Wilde via this forum post:
-#		https://www.irv2.com/forums/f54/thornwave-battery-monitor-375463.html#post4215155
-#
-#	2020-08-05	V 0.1 - Initial
-#	2021-01-23	V 0.2 - Swtich from gatttool to bluepy
-#
-#	Reads characteristic 0x15 from Thornwave Bluetooth Battery Monitor 
-#	Outputs in various formats
-#
-# 	Data format for Thornwave characteristic 0x15
-#
 #       	 Struct
 # 	Fields   Type      Desc
 #
@@ -42,10 +18,7 @@
 #	 47 - 44: I         Date/Time (unknown format)
 #	 51 - 48: f         Peak Current, 32-bit float
 #	 52+    : Unknown
-#
-#	Example:
-#	b'\xe0\xff\x0f\xc8;X\\A\xd7;\\A\x8a\xb1\x90=\xe2\x14y?B\xd7\xcf\xc0Lk\xfb\xff\xff\xff\xff\xff\x93\xa7\xff\xff\xff\xff\xff\xff\x0eS\x85\x00 \xcen\x10i\x85\xc4A'
-#
+
 import argparse
 import struct
 import time
@@ -57,15 +30,14 @@ from bluepy.btle import Peripheral, BTLEException
 
 # Slurp up command line arguments
 parser = argparse.ArgumentParser(description='Thornwave BT DCPM slurper. Reads and outputs BT DCPM data')
-group = parser.add_mutually_exclusive_group()
-parser.add_argument("-b", "--BLEaddress", help="BT DCPM BLE Address", required=True)
-parser.add_argument("-i", "--interval", type=int, help="Interval query", required=True)
-parser.add_argument("-m", "--meter", help="Meter type", required=True)
+parser.add_argument("-b", "--BLEaddress", help="BLE Address", required=True)
+parser.add_argument("-i", "--interval", type=int, help="time interval to fetch", required=True)
+parser.add_argument("-m", "--meter", help="meter name", required=True)
 args = parser.parse_args()
 z = args.interval
 meter = args.meter   
 
-class StatsReporter:
+class StatsReporter:                    # socket routines
     def __init__(
         self,
         socket_type,
@@ -107,7 +79,7 @@ class StatsReporter:
             self.create_socket()
 
 try:
-    print('attempting to connect')		
+    print('attempting to connect')		    #  bluetooth connection
     p = Peripheral(args.BLEaddress,addrType="random")
 except BTLEException as ex:
     time.sleep(10)
@@ -119,15 +91,15 @@ except BTLEException as ex:
 else:
     print('connected ',args.BLEaddress)
 
-reporter = StatsReporter(
+reporter = StatsReporter(                   # intiate socket
     (socket.AF_UNIX, ),
     '/tmp/telegraf.sock',
     socket.SOCK_DGRAM)
 
-atexit.register(reporter.close_socket)
+atexit.register(reporter.close_socket)      # exit routine 
 
 while True:
-	result = p.readCharacteristic(0x15)
+	result = p.readCharacteristic(0x15)     # bluetoon fetch and send to socket
 # Unpack into variables, skipping bytes 0-2
 	i = 3
 	PctCharged, V1Volts, V2Volts,Current, Power, Temperature, PowerMeter, ChargeMeter, TimeSinceStart, CurrentTime, PeakCurrent = struct.unpack_from('<BfffffqqIIf', result, i)

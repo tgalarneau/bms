@@ -13,10 +13,9 @@ import atexit
 import socket
   
  	# Command line arguments
-parser = argparse.ArgumentParser(description='BMS. Writes and receives notify and output data')
-group = parser.add_mutually_exclusive_group()
-parser.add_argument("-b", "--BLEaddress", help="BT BLE Address", required=True)
-parser.add_argument("-i", "--interval", type=int, help="data interval", required=True)
+parser = argparse.ArgumentParser(description='BMS. Fetches and outputs JBD bms data')
+parser.add_argument("-b", "--BLEaddress", help="Device BLE Address", required=True)
+parser.add_argument("-i", "--interval", type=int, help="Data fetch interval", required=True)
 parser.add_argument("-m", "--meter", help="Meter name", required=True)
 args = parser.parse_args() 
 z = args.interval
