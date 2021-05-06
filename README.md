@@ -73,3 +73,13 @@ I'm running this on a RaspberryPi Zero W and used Python 3.9. As Debian only has
 I have only tested and used with linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi zero W for 24/7 and proximity to device's bluetooth signal and feed its webserver to give access to any device on my lan. 
 
 Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
+
+**UPDATE**
+
+Using my PiZero W, sometimes the Pi would slow down to where it was barely usable. Checking with HTOP could see that the cpu was at 100% and very heavy RAM use mainly due to Influxdb. So I found a better time series database - Victoria-Metrics. It is very fast with a better query language and uses only 20% of what Influxdb. The RAM usege is also about 60% less.
+
+All I had to do was swap Victoria=Metrics for Influxdb. Telegraf and Grafana stayed the same. Telegraf only required a different port.
+
+
+
+
