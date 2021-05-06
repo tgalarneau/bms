@@ -78,7 +78,7 @@ Influx also offers a free cloud version of their database which would give the a
 
 Using my PiZero W, sometimes the Pi would slow down to where it was barely usable. Checking with HTOP could see that the cpu was at 100% and very heavy RAM use due to Influxdb. So I found a better time series database - Victoria-Metrics. It is very fast with a better query language and the cpu uses only 20% of what Influxdb used. The RAM usage is also 60% less.
 
-All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it only a different port for output.
+All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it only required a different port for output.
 
 
 
