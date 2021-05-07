@@ -68,8 +68,6 @@ Using linux it's utilizing systemd services for the data collection, with automa
 * systemctl start inverter.service
 * systemctl enable inverter.service
 
-I'm running this on a RaspberryPi Zero W and used Python 3.9. As Debian only has version 3.7, it required building 3.9 from source. This was only necessary because (In Python 3.9, new string methods removeprefix() and removesuffix() are introduced) and was too lazy to revert to earlier method.
-
 I have only tested and used with linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi zero W for 24/7 and proximity to device's bluetooth signal and feed its webserver to give access to any device on my lan. 
 
 Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
@@ -80,6 +78,7 @@ Using my PiZero W, sometimes the Pi would slow down to where it was barely usabl
 
 All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it only required a different port for output.
 
+I have now added mqtt as well as socket output.
 
 
 
