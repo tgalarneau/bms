@@ -2,67 +2,31 @@
 
 	# using python 3.9 
 	
-#import bluepy
 from bluepy.btle import Peripheral, DefaultDelegate, BTLEException
 import struct
 import argparse
 import sys
 import time
 import binascii
-import atexit
 import socket
+import atexit
+import paho.mqtt.client as paho
   
  	# Command line arguments
 parser = argparse.ArgumentParser(description='Fetches and outputs JBD bms data')
 parser.add_argument("-b", "--BLEaddress", help="Device BLE Address", required=True)
 parser.add_argument("-i", "--interval", type=int, help="Data fetch interval", required=True)
-parser.add_argument("-m", "--meter", help="Meter name", required=True)
+parser.add_argument("-m", "--meter", help="meter name", required=True)
 args = parser.parse_args() 
 z = args.interval
 meter = args.meter	
 
-cells1 = []
+broker="192.168.1.145"
+port=1883
 
-class StatsReporter:
-    def __init__(
-        self,
-        socket_type,
-        socket_address,
-        socket_data,
-        encoding='utf-8',
-    ):
-        self._socket_type = socket_type
-        self._socket_address = socket_address
-        self._encoding = encoding
-        self._socket_data = socket_data
-        self.create_socket()
-    
-    def create_socket(self):
-        try:
-            #sock = socket.socket(*self._socket_type,self._socket_data)
-            sock = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
-            sock.connect("/tmp/telegraf.sock")
-            self._sock = sock
-            print('Created socket')
-        except socket.error as e:
-            print(f'Error creating socket: {e}')
-
-    def close_socket(self):
-        try:
-            self._sock.close()
-            print('Closed socket')
-        except (AttributeError, socket.error) as e:
-            print(f'Error closing socket: {e}')
-    
-    def send_data(self, data):
-        try:
-            sent = self._sock.send(data.encode(self._encoding))
-            print(data)
-        except (AttributeError, socket.error) as e:
-            print(f'Error sending data on socket: {e}')
-            # attempt to recreate socket on error
-            self.close_socket()
-            self.create_socket()
+def disconnect():
+    mqtt.disconnect()
+    print("broker disconnected")
 
 def cellinfo1(data):			# process pack info
     infodata = data
@@ -91,15 +55,12 @@ def cellinfo1(data):			# process pack info
     c02 = int(bal1[14:15])
     c01 = int(bal1[15:16])  
     message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i" % (meter,volts,amps,watts,remain,capacity,cycles))		
-    print(message)
-    #reporter.send_data(message)         # not sending mdate (manufacture date)
+    ret = mqtt.publish("meter/data",message)
     message = ("meter,c01,c02,c03,c04,c05,c06,c07,c08\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c01,c02,c03,c04,c05,c06,c07,c08))
-    print(message)
-    #reporter.send_data(message)
+    ret = mqtt.publish("meter/data",message)
     message = ("meter,c09,c10,c11,c12,c13,c14,c15,c16\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c09,c10,c11,c12,c13,c14,c15,c16))
-    print(message)
-    #reporter.send_data(message)
-
+    ret = mqtt.publish("meter/data",message)
+    
 def cellinfo2(data):
     infodata = data  
     i = 0                          # unpack into variables, ignore end of message byte '77'
@@ -123,51 +84,35 @@ def cellinfo2(data):
     ic = int(prt[11:12])        # ic failure
     cnf = int(prt[12:13])		# fet config problem
     message = ("meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf))
-    print(message)
-    #reporter.send_data(message)
+    ret = mqtt.publish("meter/data",message)
     message = ("meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
-    print(message)
-    #reporter.send_data(message)          # not sending version number or number of temp sensors
+    ret = mqtt.publish("meter/data",message)     # not sending version number or number of temp sensors
 
-def cellvolts1(data):			# process cell voltages
+def cellvolts1(data):			                # process cell voltages
     global cells1
-    celldata = data             # Unpack into variables, skipping header bytes 0-3
-    i = 4
+    celldata = data
+    i = 4                       # Unpack into variables, skipping header bytes 0-3
     cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8 = struct.unpack_from('>HHHHHHHH', celldata, i)
     cells1 = [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8] 	# needed for max, min, delta calculations
     message = ("meter,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8))
-    print(message)
-    #reporter.send_data(message)
-
-def cellvolts2(data):			# process cell voltages
-    celldata = data
-    i = 0                       # Unpack into variables, ignore end of message byte '77'
-    cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16,b77 = struct.unpack_from('>HHHHHHHHB', celldata, i)
-    message = ("meter,cell9,cell10,cell11,cell12,cell13,cell14,cell15,cell16\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,cell9,cell10,cell11,cell12,cell13,cell14,cell15,cell16))
-    #reporter.send_data(message)  
-    print(message)
-    cells2 = [cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16]	# adding cells min, max and delta	
-    allcells = cells1 + cells2
-    cellmin = min(allcells)
-    cellmax = max(allcells)
+    ret = mqtt.publish("meter/data",message)
+    cellmin = min(cells1)
+    cellmax = max(cells1)
     delta = cellmax-cellmin
     message = ("meter,cellmin,cellmax,delta\r\n%s,%0i,%0i,%0i" % (meter,cellmin,cellmax,delta))
-    print(message)
-    #reporter.send_data(message)
-				
-class MyDelegate(DefaultDelegate):		# handles notification responses
+    ret = mqtt.publish("meter/data",message)
+                    
+class MyDelegate(DefaultDelegate):		    # notification responses
 	def __init__(self):
 		DefaultDelegate.__init__(self)
 	def handleNotification(self, cHandle, data):
 		hex_data = binascii.hexlify(data) 		# Given raw bytes, get an ASCII string representing the hex values
-		text_string = hex_data.decode('utf-8')
-		if text_string.find('dd04') != -1:		# check incoming data for routing to decoding routines
+		text_string = hex_data.decode('utf-8')  # check incoming data for routing to decoding routines
+		if text_string.find('dd04') != -1:	                             # x04 (1-8 cells)	
 			cellvolts1(data)
-		elif text_string.find('dd03') != -1:
+		elif text_string.find('dd03') != -1:                             # x03
 			cellinfo1(data)
-		elif text_string.find('77') != -1 and len(text_string) == 38:	 # x04
-			cellvolts2(data)
-		elif text_string.find('77') != -1 and len(text_string) == 36:	 # x03
+		elif text_string.find('77') != -1 and len(text_string) == 28 or len(text_string) == 36:	 # x03
 			cellinfo2(data)		
 try:
     print('attempting to connect')		
@@ -182,16 +127,13 @@ except BTLEException as ex:
 else:
     print('connected ',args.BLEaddress)
 
-reporter = StatsReporter(               # socket initialization
-    (socket.AF_UNIX, ),
-    '/tmp/telegraf.sock',
-    socket.SOCK_DGRAM)
+atexit.register(disconnect)
+mqtt = paho.Client("control1")      #create and connect mqtt client
+mqtt.connect(broker,port)     
+bms.setDelegate(MyDelegate())		# setup bt delegate for notifications
 
-atexit.register(reporter.close_socket)
-bms.setDelegate(MyDelegate())		# setup delegate for notifications
-
-		# write empty data to 0x15 for notification request   --  address x03 handle for info & x04 handle for cell voltage
-		# using waitForNotifications(5) as less than 5 seconds has caused some missed notifications
+	# write empty data to 0x15 for notification request   --  address x03 handle for info & x04 handle for cell voltage
+	# using waitForNotifications(5) as less than 5 seconds has caused some missed notifications
 while True:
 	result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x03\x00\xff\xfd\x77',False)		# write x03 w/o response cell info
 	bms.waitForNotifications(5)
