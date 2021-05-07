@@ -23,7 +23,7 @@ meter = args.meter
 
 cells1 = []
 
-broker="192.168.1.145"
+broker="127.0.0.1"
 port=1883
 
 def disconnect():
