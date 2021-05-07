@@ -12,7 +12,7 @@ import socket
 import atexit
   
  	# Command line arguments
-parser = argparse.ArgumentParser(description='BMS. fetches and outputs JBD bms data')
+parser = argparse.ArgumentParser(description='Fetches and outputs JBD bms data')
 parser.add_argument("-b", "--BLEaddress", help="Device BLE Address", required=True)
 parser.add_argument("-i", "--interval", type=int, help="Data fetch interval", required=True)
 parser.add_argument("-m", "--meter", help="meter name", required=True)
@@ -100,11 +100,9 @@ def cellinfo1(data):			# process pack info
 def cellinfo2(data):
     infodata = data  
     i = 0                          # unpack into variables, ignore end of message byte '77'
-    protect,vers,percent,fet,cells,sensors,temp1,temp2,temp3,temp4,b77 = struct.unpack_from('>HBBBBBHHHHB', infodata, i)
+    protect,vers,percent,fet,cells,sensors,temp1,temp2,b77 = struct.unpack_from('>HBBBBBHHB', infodata, i)
     temp1 = (temp1-2731)/10
     temp2 = (temp2-2731)/10			# fet 0011 = 3 both on ; 0010 = 2 disch on ; 0001 = 1 chrg on ; 0000 = 0 both off
-    temp3 = (temp3-2731)/10
-    temp4 = (temp4-2731)/10
     prt = (format(protect, "b").zfill(16))		# protect trigger (0,1)(off,on)
     ovp = int(prt[0:1])			# overvoltage
     uvp = int(prt[1:2])			# undervoltage
@@ -122,7 +120,7 @@ def cellinfo2(data):
     message = ("meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf))
     print(message)
     #reporter.send_data(message)
-    message = ("meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2,temp3,temp4))
+    message = ("meter,protect,percent,fet,cells,temp1,temp2\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2))
     print(message)
     #reporter.send_data(message)
                  # not sending version number or number of temp sensors
