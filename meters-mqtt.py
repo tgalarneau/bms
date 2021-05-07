@@ -19,7 +19,7 @@ args = parser.parse_args()
 z = args.interval
 meter = args.meter   
 
-broker="192.168.1.145"
+broker="127.0.0.1"
 port=1883
    
 def disconnect():
