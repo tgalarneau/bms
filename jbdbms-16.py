@@ -148,10 +148,12 @@ def cellvolts2(data):			# process cell voltages
     print(message)
     cells2 = [cell9, cell10, cell11, cell12, cell13, cell14, cell15, cell16]	# adding cells min, max and delta	
     allcells = cells1 + cells2
-    cellmin = min(allcells)
-    cellmax = max(allcells)
-    delta = cellmax-cellmin
-    message = ("meter,cellmin,cellmax,delta\r\n%s,%0i,%0i,%0i" % (meter,cellmin,cellmax,delta))
+    cellsmin = min(allcells)
+    cellsmax = max(allcells)
+    delta = cellsmax-cellsmin
+    mincell = ("cell"+str((allcells.index(min(allcells))+1)))
+    maxcell = ("cell"+str((allcells.index(max(allcells))+1)))
+    message = ("meter,mincell,cellsmin,maxcell,cellsmax,delta\r\n%s,%s,%0i,%s,%0i,%0i" % (meter,mincell,cellsmin,maxcell,cellsmax,delta))
     print(message)
     #reporter.send_data(message)
 				
@@ -193,9 +195,9 @@ bms.setDelegate(MyDelegate())		# setup delegate for notifications
 		# write empty data to 0x15 for notification request   --  address x03 handle for info & x04 handle for cell voltage
 		# using waitForNotifications(5) as less than 5 seconds has caused some missed notifications
 while True:
-	result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x03\x00\xff\xfd\x77',False)		# write x03 w/o response cell info
-	bms.waitForNotifications(5)
-	result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x04\x00\xff\xfc\x77',False)		# write x04 w/o response cell voltages
-	bms.waitForNotifications(5)
-	time.sleep(z)
+    result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x04\x00\xff\xfc\x77',False)		# write x04 w/o response cell voltages
+    bms.waitForNotifications(5)
+    result = bms.writeCharacteristic(0x15,b'\xdd\xa5\x03\x00\xff\xfd\x77',False)		# write x03 w/o response cell info
+    bms.waitForNotifications(5)
+    time.sleep(z)
    
