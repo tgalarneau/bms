@@ -10,7 +10,7 @@ import socket
 from bluepy.btle import Peripheral, BTLEException
 import paho.mqtt.client as paho
 
-# Slurp up command line arguments
+# Command line arguments
 parser = argparse.ArgumentParser(description='Thornwave bluetooth. Reads and outputs data')
 parser.add_argument("-b", "--BLEaddress", help="BLE Address", required=True)
 parser.add_argument("-i", "--interval", type=int, help="time interval to fetch", required=True)
@@ -27,7 +27,7 @@ def disconnect():
     print("broker disconnected")
   
 try:
-    print('connecting BT')		    #  bluetooth connection
+    print('connecting BT')		                        #  bluetooth connection
     p = Peripheral(args.BLEaddress,addrType="random")
 except BTLEException as ex:
     time.sleep(10)
@@ -40,7 +40,12 @@ else:
     print('connected ',args.BLEaddress)
 
 atexit.register(disconnect)
-mqtt = paho.Client("control1")                     #create a nd connect client
+if meter == "solar":
+    mqtt = paho.Client("control1")                     #create and connect client
+elif meter == "inverter":
+    mqtt = paho.Client("control2")
+
+topic = "data/"+meter
 mqtt.connect(broker,port) 
 
 while True:
@@ -54,6 +59,6 @@ while True:
     ChargeMeter = ChargeMeter/1000
 # Format and send mqtt message - not sending V2Volts, TimeSinceStart, Currentime as influxdb as timestamp
     message = ("meter,volts,amps,watts,temp,kwh,ah,peak\r\n%s,%0.3f,%0.2f,%0.2f,%0.1f,%0.4f,%0.2f,%0.2f" % (meter,V1Volts,Current,Power,Temperature,PowerMeter,ChargeMeter,PeakCurrent))
-    print(message)
-    ret = mqtt.publish("meter/data",message)
+    #print(message)
+    ret = mqtt.publish(topic,message)
     time.sleep(z)

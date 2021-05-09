@@ -21,6 +21,7 @@ args = parser.parse_args()
 z = args.interval
 meter = args.meter	
 
+topic ="data/bms"
 broker="127.0.0.1"
 port=1883
 
@@ -55,11 +56,11 @@ def cellinfo1(data):			# process pack info
     c02 = int(bal1[14:15])
     c01 = int(bal1[15:16])  
     message = ("meter,volts,amps,watts,remain,capacity,cycles\r\n%s,%0.2f,%0.2f,%0.2f,%0i,%0i,%0i" % (meter,volts,amps,watts,remain,capacity,cycles))		
-    ret = mqtt.publish("meter/data",message)
+    ret = mqtt.publish(topic,message)
     message = ("meter,c01,c02,c03,c04,c05,c06,c07,c08\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c01,c02,c03,c04,c05,c06,c07,c08))
-    ret = mqtt.publish("meter/data",message)
+    ret = mqtt.publish(topic,message)
     message = ("meter,c09,c10,c11,c12,c13,c14,c15,c16\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,c09,c10,c11,c12,c13,c14,c15,c16))
-    ret = mqtt.publish("meter/data",message)
+    ret = mqtt.publish(topic,message)
     
 def cellinfo2(data):
     infodata = data  
@@ -82,9 +83,9 @@ def cellinfo2(data):
     ic = int(prt[11:12])        # ic failure
     cnf = int(prt[12:13])		# fet config problem
     message = ("meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf))
-    ret = mqtt.publish("meter/data",message)
+    ret = mqtt.publish(topic,message)
     message = ("meter,protect,percent,fet,cells,temp1,temp2\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2))
-    ret = mqtt.publish("meter/data",message)     # not sending version number or number of temp sensors
+    ret = mqtt.publish(topic,message)     # not sending version number or number of temp sensors
 
 def cellvolts1(data):			                # process cell voltages
     global cells1
@@ -93,12 +94,14 @@ def cellvolts1(data):			                # process cell voltages
     cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8 = struct.unpack_from('>HHHHHHHH', celldata, i)
     cells1 = [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8] 	# needed for max, min, delta calculations
     message = ("meter,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8))
-    ret = mqtt.publish("meter/data",message)
-    cellmin = min(cells1)
-    cellmax = max(cells1)
-    delta = cellmax-cellmin
-    message = ("meter,cellmin,cellmax,delta\r\n%s,%0i,%0i,%0i" % (meter,cellmin,cellmax,delta))
-    ret = mqtt.publish("meter/data",message)
+    ret = mqtt.publish(topic,message)
+    cellsmin = min(cells1)          # min, max, delta
+    cellsmax = max(cells1)
+    delta = cellsmax-cellsmin
+    mincell = (cells1.index(min(cells1))+1)
+    maxcell = (cells1.index(max(cells1))+1)
+    message = ("meter,mincell,cellsmin,maxcell,cellsmax,delta\r\n%s,%0i,%0i,%0i,%0i,%0i" % (meter,mincell,cellsmin,maxcell,cellsmax,delta))
+    ret = mqtt.publish(topic,message)
                     
 class MyDelegate(DefaultDelegate):		    # notification responses
 	def __init__(self):
@@ -126,7 +129,7 @@ else:
     print('connected ',args.BLEaddress)
 
 atexit.register(disconnect)
-mqtt = paho.Client("control1")      #create and connect mqtt client
+mqtt = paho.Client("control3")      #create and connect mqtt client
 mqtt.connect(broker,port)     
 bms.setDelegate(MyDelegate())		# setup bt delegate for notifications
 
