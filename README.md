@@ -4,7 +4,7 @@
 
 jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS and then processing it for applications. 
 
-I've added two jbdbms codes one for 16 cells the other for 8 cell packs : jbdbms-16.py and jbdbms-8.py
+I've added two jbdbms codes one for 16 cells the other for 8 cell packs : jbdbms-16-socket.py and jbdbms-8-socket.py
 
 The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way JBD implemented this is not standard as in sending read requests or turning on notifications to receive data. It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
 
@@ -32,7 +32,7 @@ For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it
 
 **SETUP**
 
-It's very simple, first install *jbdbms.py* or *meters-socket.py* or both, test data output, and then install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
+It's fairly simple, first install a version of *jbdbms.py* or *meters-socket.py* or both, test data output, and then install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana. Remember to change print outputs to socket outputs by uncommenting.
 
 For InfluxDB you need to create a new database and user with password. 
 
@@ -59,7 +59,7 @@ Telegraf configuration requires the following to be added :
   
 That's it, now just need to open Grafana via urls used. If data doesn't appear on dashboards, can launch Telegraf with --debug option, making it output more information about errors in processing of data.
   
-Using linux it's utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost.
+Using linux it's utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost. 
 * copy service files to /etc/systemd/system/
 * systemctl start jbdbms.service
 * systemctl enable jbdbms.service
@@ -68,7 +68,7 @@ Using linux it's utilizing systemd services for the data collection, with automa
 * systemctl start inverter.service
 * systemctl enable inverter.service
 
-I have only tested and used with linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi zero W for 24/7 and proximity to device's bluetooth signal and feed its webserver to give access to any device on my lan. 
+These service files must be updated to show which version you use. I have only tested and used with linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi zero W for 24/7 and proximity to device's bluetooth signal and feed its webserver to give access to any device on my lan. 
 
 Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
 
@@ -80,7 +80,7 @@ All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana 
 
 **MQTT & JSON**
 
-Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json input and output to make using the available data easier by other programs. I have also included a Telegraf configure file with the changed input section that can be added to telegraf.conf file.
+Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json input/output to make using mqtt data easier with other programs. I have also included a new json inputs section for Telegraf's configure file with the changed input section that can be added to existing telegraf.conf file.
 
 
 
