@@ -18,7 +18,7 @@ This program only prints out the data for testing and viewing until the sock com
 
 It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS and building data structures then formatting it to cvs data and writing it to a unix socket for Telegraf's Socket Listener Input Plugin. The data then preceeds via Influxdb to Grafana for graphing. Telegraf is the middleman, collecting arriving data and getting it into Influxdb. Other than configuraton files the user only works with Grafana via a browser to access and graph data in dashboards. I included my Grafana bms dashboard json file that can be used as a template as seen below.
 
-![Screenshot](jbdbms.png)
+![Screenshot](/graphics/jbdbms.png)
 
 **THORNWAVE**
 
