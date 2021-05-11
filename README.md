@@ -80,7 +80,7 @@ All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana 
 
 **MQTT & JSON**
 
-Now can choose either mqtt or socket output. They have been changed from csv to json input and output to make using the available data easier by other programs. I have also included a Telegraf configure file with the changed input section to be added to telegraf.conf file.
+Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json input and output to make using the available data easier by other programs. I have also included a Telegraf configure file with the changed input section that can be added to telegraf.conf file.
 
 
 
