@@ -78,7 +78,9 @@ Using my PiZero W, sometimes the Pi would slow down to where it was barely usabl
 
 All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it only required a different port for output.
 
-Now can choose either mqtt or socket output.
+**MQTT**
+
+Now can choose either mqtt or socket output. They have been changed from csv to json input and output to make using the available data easier by other programs. I have also included a Telegraf configure file with the changed input section to be added to telegraf.conf file.
 
 
 
