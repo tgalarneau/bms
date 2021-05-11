@@ -28,7 +28,7 @@ For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it
 
 *meters-sock.py -b CF:E5:F3:D1:9F:87 -i 30 -m solar*
 
-![Screenshot](/graphicsthornwave.png)
+![Screenshot](/graphics/thornwave.png)
 
 **SETUP**
 
