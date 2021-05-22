@@ -4,7 +4,7 @@
 
 jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS and then processing it for applications. 
 
-I've added separate jbdbms codes one for 16 cells the other for 8 cell packs : jbdbms-16-socket.py and jbdbms-8-socket.py along with jbdbms-16-mqtt.py and jbdbms-8-mqtt.py.
+I've added separate jbdbms codes one for 16 cells the other for 8 cell packs : jbdbms-16-socket.py and jbdbms-8-socket.py along with jbdbms-16-mqtt.py and jbdbms-8-mqtt.py. I added an test version for 4 cell packs. Let me know if it works as I have no way of tesing.
 
 The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way JBD implemented this is not standard as in sending read requests or turning on notifications to receive data. It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
 
@@ -36,7 +36,7 @@ It's fairly simple, first install a version of *jbdbms-socket.py* or *thornwave-
 
 For InfluxDB you need to create a new database and user with password. 
 
-Open with terminal **influx** then type :
+Open terminal then type :
 * influx
 * CREATE DATABASE battery
 * influx user create -n "username" -p "password" -o "org-name"
