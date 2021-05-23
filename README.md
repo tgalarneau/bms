@@ -10,19 +10,19 @@ The JBD BMS uses either serial or bluetooth to access its data and this project 
 
 So far I have only programmed the 0x03 (pack info) and 0x04 (cell voltages) for system monitoring.
 
-jbdbms.py alone is required. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The jbdbms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
+jbdbms.py alone is required fetching bms data. Just discover your JBD BLE address. I use hcitool lescan to find this or the Xiaoxiang app also shows this at startup. The jbdbms.py program is initiated with a (-b) device BLE address, (-i) collection interval and (-m) monitor name.
 
 *jbdbms-16-socket.py -b xx:xx:xx:xx:xx -i 10 -m jbdbms*
 
-This program only prints out the data for testing and viewing until the socket write commands are uncommented and Telegraf is setup to listen to socket and deliver data to influxdb. The output format can be changed to your own requirements and application.
+This program only prints out ongoing bms data for testing and viewing until the socket write commands are uncommented and Telegraf is setup to listen to socket and deliver data to influxdb. The output format can be changed to your own requirements and application.
 
-It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS and building data structures then formatting it to cvs data and writing it to a unix socket for Telegraf's Socket Listener Input Plugin. The data then preceeds via Influxdb to Grafana for graphing. Telegraf is the middleman, collecting arriving data and getting it into Influxdb. Other than configuraton files, the user only works with Grafana via a browser to access and graph data in dashboards. I included my Grafana bms dashboard json file that can be used as a template, if needed, as seen below.
+It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS and building data structures then formatting it to cvs data and writing it to a unix socket for Telegraf's Socket Listener Input Plugin. The data then preceeds via Influxdb to Grafana for graphing. Telegraf is the middleman, collecting arriving data and getting it into Influxdb. Other than configuraton files, the user only works with Grafana via a browser accessing and graphing data in dashboards. I included my Grafana bms dashboard json file that can be used as a template, as seen below.
 
 ![Screenshot](/graphics/jbdbms.png)
 
 **THORNWAVE**
 
-My system uses two Thornwave PowerMon bluetooth battery monitors https://www.thornwave.com/collections/smart-products. One shunt for the solar charge controller and the another shunt for the inverter. These are much simpler to use, only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors)
+My system uses two Thornwave PowerMon bluetooth battery monitors. One PowerMon shunt for the solar charge controller and the another shunt for the inverter. These are much simpler to use, only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors https://www.thornwave.com)
 
 For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. The meters-socket.py is for the Thronwave meters.  I also included a Grafana Thornwave dashboard json file that can be used as a template as seen below.
 
