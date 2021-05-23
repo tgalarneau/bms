@@ -32,7 +32,7 @@ For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it
 
 **SETUP**
 
-It's fairly simple with linux, first download a version of *jbdbms-socket.py* or *thornwave-socket.py* or both, first use and test data output, then via your app manager install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana. (Remember to change print outputs to socket outputs by uncommenting)
+It's fairly simple with linux, download a version of *jbdbms-socket.py* or *thornwave-socket.py* or both, use and test data output terminal output, if okay, then via your app manager install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana.
 
 For using InfluxDB you need to create a new database and a user with password. 
 
@@ -58,9 +58,9 @@ Telegraf configuration requires the following to be added :
  * data_type = "float"  
  * csv_tag_columns = ["meter"]
   
-That's it, now open Grafana via urls used. If data doesn't appear on dashboards, launch Telegraf with --debug option, showing output with more information about any errors in processing data.
+That's it, now open Grafana at 127.0.0.1:3000 or using pi's ip. If data doesn't appear on dashboards, launch Telegraf with --debug option, showing output with more information about any errors in processing data.
   
-With linux it's utilizing systemd services for the data collection, with automatic loading on startup and restarting if connection lost. 
+With linux it's utilizing systemd services with automatic loading on startup and restarting if connection lost. 
 * copy service files to /etc/systemd/system/
 * systemctl start jbdbms.service
 * systemctl enable jbdbms.service
@@ -69,19 +69,19 @@ With linux it's utilizing systemd services for the data collection, with automat
 * systemctl start inverter.service
 * systemctl enable inverter.service
 
-These service files must be updated to show version used. I have only tested and using on  linux but this should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi Zero W for 24/7 and proximity to device's bluetooth signal and feeding a webserver giving access to any device on my lan. 
+These service files must be updated to show your version used. I have only tested and using with linux but should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi Zero W for 24/7 and proximity to device's bluetooth signal and feeding a webserver giving access to any device on my lan. 
 
 Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
 
 **UPDATE**
 
-Using my PiZero W, sometimes the Pi would slow down to where it was barely usable. Checking with HTOP could see that the cpu was at 100% and very heavy RAM use due to Influxdb. So I found a better time series database - Victoria-Metrics. It is very fast with a better query language and the cpu uses only 20% of what Influxdb used. The RAM usage is also 60% less.
+Using my PiZero W, being so low powered sometimes slowing down to where it was barely usable. Checking with HTOP could see that the cpu was at 100% and very heavy RAM use due to Influxdb. So I found a better time series database - Victoria-Metrics. It is very fast with a better query language and the cpu uses only 20% of what Influxdb used. The RAM usage is also 60% less.
 
-All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it uses a different port for output.
+All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it only uses a different port than influxdb for output.
 
 **MQTT & JSON**
 
-Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json input/output to make using mqtt data easier with other programs. I have also included a new json inputs section for Telegraf's configure file with the changed input section that can be added to existing telegraf.conf file replacing the socket listener with the mqtt listener. Of course, also need to install Mosquitto or another mqtt server/client.
+Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json input/output to make using mqtt data easier with other programs. I have also included mqtt listner and json inputs in the changed section that can be added to a existing telegraf.conf file replacing the socket listener with the mqtt listener. Of course, also need to install Mosquitto or another mqtt server/client.
 
 
 
