@@ -32,7 +32,7 @@ For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it
 
 **SETUP**
 
-It's fairly simple with linux, download a version of *jbdbms-socket.py* or *thornwave-socket.py* or both, use and test data output terminal output, if okay, then via your app manager install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana.
+It's fairly simple with linux, download a version of *jbdbms-socket.py* or *thornwave-socket.py* or both, use and test data output, if okay, then via your app manager install *Telegraph, InfluxDB, and Grafana*. The default configurations are okay for both InfluxDB and Grafana.
 
 For using InfluxDB you need to create a new database and a user with password. 
 
@@ -58,7 +58,7 @@ Telegraf configuration requires the following to be added :
  * data_type = "float"  
  * csv_tag_columns = ["meter"]
   
-That's it, now open Grafana at 127.0.0.1:3000 or using pi's ip. If data doesn't appear on dashboards, launch Telegraf with --debug option, showing output with more information about any errors in processing data.
+That's it, now open Grafana at 127.0.0.1:3000 or substituting pi's ip. If data doesn't appear, launch Telegraf with --debug option, showing output with more information about any errors in processing data.
   
 With linux it's utilizing systemd services with automatic loading on startup and restarting if connection lost. 
 * copy service files to /etc/systemd/system/
@@ -69,7 +69,7 @@ With linux it's utilizing systemd services with automatic loading on startup and
 * systemctl start inverter.service
 * systemctl enable inverter.service
 
-These service files must be updated to show your version used. I have only tested and using with linux but should be okay from any python and bluetooth ready computer within bluetooth range. I use the RaspberryPi Zero W for 24/7 and proximity to device's bluetooth signal and feeding a webserver giving access to any device on my lan. 
+These service files must be updated to show version used and location. I have only used with linux but should be okay from any python and bluetooth ready computer. I use a RaspberryPi Zero W for 24/7 and proximity to device's bluetooth signal and feeding a webserver giving access to any device on my lan. 
 
 Influx also offers a free cloud version of their database which would give the ability to access the bms from anywhere via the internet. Haven't tried this yet.
 
