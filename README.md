@@ -1,6 +1,6 @@
 # JBD BMS and Thornwave bluetooth data monitoring
 
-**JBD**
+**JBD - Battery Management System**
 
 jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS https://overkillsolar.com and then processing it for applications. 
 
