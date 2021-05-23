@@ -20,6 +20,10 @@ It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS 
 
 ![Screenshot](/graphics/jbdbms.png)
 
+**MQTT & JSON**
+
+Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json output to make using mqtt data easier with other programs. I have also included mqtt listener with json inputs in the changed section that can be added to a existing telegraf.conf file only replacing the socket listener with the mqtt listener. Of course, also need to first install Mosquitto or another mqtt server/client.
+
 **THORNWAVE**
 
 My system uses two Thornwave PowerMon bluetooth battery monitors. One PowerMon shunt for the solar charge controller and the another shunt for the inverter. These are much simpler to use, only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors https://www.thornwave.com)
@@ -77,11 +81,7 @@ Influx also offers a free cloud version of their database which would give the a
 
 Using my PiZero W, being so low powered sometimes slowing down to where it was barely usable. Checking with HTOP could see that the cpu was at 100% and very heavy RAM use due to Influxdb. So I found a better time series database - Victoria-Metrics. It is very fast with a better query language and the cpu uses only 20% of what Influxdb used. The RAM usage is also 60% less.
 
-All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it only uses a different port than influxdb for output.
-
-**MQTT & JSON**
-
-Now can choose either mqtt or socket output. The mqtt version has been changed from csv to json output to make using mqtt data easier with other programs. I have also included mqtt listener with json inputs in the changed section that can be added to a existing telegraf.conf file only replacing the socket listener with the mqtt listener. Of course, also need to first install Mosquitto or another mqtt server/client.
+All it required was to swap Victoria-Metrics for Influxdb. Telegraf and Grafana stayed the same. For Telegraf's configuration it uses a different port than influxdb for output.
 
 
 
