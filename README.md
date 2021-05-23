@@ -2,7 +2,7 @@
 
 **JBD - Battery Management System**
 
-jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS https://overkillsolar.com and then processing it for applications. 
+jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS https://overkillsolar.com and processing it for applications. 
 
 I've added separate jbdbms python scripts one for 16 cells another for 8 cell packs : jbdbms-16-socket.py and jbdbms-8-socket.py along with jbdbms-16-mqtt.py and jbdbms-8-mqtt.py. I now added a test version for 4 cell packs. (Let me know if it works as I have no way of testing)
 
