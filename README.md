@@ -22,7 +22,7 @@ It is using bluetooth (bluepy) for fetching data from a JBD BMS or Overkill BMS 
 
 **THORNWAVE**
 
-For my system, I also use two Thornwave bluetooth battery monitor https://www.thornwave.com/collections/smart-products. One for the solar charge controller and the other for an inverter. These are much simpler only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors)
+For my system, I also use two Thornwave bluetooth battery monitors https://www.thornwave.com/collections/smart-products. One for the solar charge controller and the other for an inverter. These are much simpler only requiring a read request at (0x15) which returns the data for processing. (these are well made and fairly inexpensive shunt monitors)
 
 For Thornwave see https://github.com/mkjanke/ThornwavePy I have only modified it for cvs data, writing to Unix socket and leaving connection open for ongoing data. The meters-socket.py is for the Thronwave meters.  I also included a Grafana Thornwave dashboard json file that can be used as a template as seen below.
 
