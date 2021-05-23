@@ -4,7 +4,7 @@
 
 jbdbms.py is a backend for using bluetooth to pull data from a JBD/Overkill BMS https://overkillsolar.com and then processing it for applications. 
 
-I've added separate jbdbms codes one for 16 cells the other for 8 cell packs : jbdbms-16-socket.py and jbdbms-8-socket.py along with jbdbms-16-mqtt.py and jbdbms-8-mqtt.py. I added a test version for 4 cell packs. (Let me know if it works as I have no way of testing)
+I've added separate jbdbms python scripts one for 16 cells another for 8 cell packs : jbdbms-16-socket.py and jbdbms-8-socket.py along with jbdbms-16-mqtt.py and jbdbms-8-mqtt.py. I now added a test version for 4 cell packs. (Let me know if it works as I have no way of testing)
 
 The JBD BMS uses either serial or bluetooth to access its data and this project is for the bluetooth interface. The way JBD implemented this is not standard as in sending read requests or turning on notifications to receive data. It requires sending without data, write requests to handles (0x03 and 0x04), i.e. 'dda50400fffc77'. These messages cause the device to return a single notification response via a different handle. The returned notify is broken into 2 messages. The first is the start of the message and the second is the last half. 
 
