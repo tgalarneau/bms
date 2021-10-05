@@ -100,9 +100,9 @@ def cellinfo1(data):			# process pack info
 def cellinfo2(data):
     infodata = data  
     i = 0                          # unpack into variables, ignore end of message byte '77'
-    protect,vers,percent,fet,cells,sensors,temp1,temp2,b77 = struct.unpack_from('>HBBBBBHHB', infodata, i)
+    protect,vers,percent,fet,cells,sensors,temp1,b77 = struct.unpack_from('>HBBBBBHB', infodata, i)
     temp1 = (temp1-2731)/10
-    temp2 = (temp2-2731)/10			# fet 0011 = 3 both on ; 0010 = 2 disch on ; 0001 = 1 chrg on ; 0000 = 0 both off
+    #temp2 = (temp2-2731)/10			# fet 0011 = 3 both on ; 0010 = 2 disch on ; 0001 = 1 chrg on ; 0000 = 0 both off
     prt = (format(protect, "b").zfill(16))		# protect trigger (0,1)(off,on)
     ovp = int(prt[0:1])			# overvoltage
     uvp = int(prt[1:2])			# undervoltage
@@ -120,7 +120,7 @@ def cellinfo2(data):
     message = ("meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf\r\n%s,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i,%0i" % (meter,ovp,uvp,bov,buv,cot,cut,dot,dut,coc,duc,sc,ic,cnf))
     print(message)
     #reporter.send_data(message)
-    message = ("meter,protect,percent,fet,cells,temp1,temp2\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1,temp2))
+    message = ("meter,protect,percent,fet,cells,temp1\r\n%s,%0000i,%00i,%00i,%0i,%0.1f,%0.1f" % (meter,protect,percent,fet,cells,temp1))
     print(message)
     #reporter.send_data(message)
                  # not sending version number or number of temp sensors
@@ -153,7 +153,7 @@ class MyDelegate(DefaultDelegate):		    # notification responses
 			cellinfo1(data)
 		#elif text_string.find('77') != -1 and len(text_string) == 38:	 # x04 (9-16 cells)
 		#	cellvolts2(data)
-		elif text_string.find('77') != -1 and len(text_string) == 28 or len(text_string) == 36:	 # x03
+		elif text_string.find('77') != -1 and len(text_string) == 24 or len(text_string) == 36:	 # x03
 			cellinfo2(data)		
 try:
     print('attempting to connect')		
