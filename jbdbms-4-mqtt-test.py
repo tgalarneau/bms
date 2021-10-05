@@ -73,9 +73,9 @@ def cellinfo1(data):			# process pack info
 def cellinfo2(data):
     infodata = data  
     i = 0                          # unpack into variables, ignore end of message byte '77'
-    protect,vers,percent,fet,cells,sensors,temp1,temp2,b77 = struct.unpack_from('>HBBBBBHHB', infodata, i)
+    protect,vers,percent,fet,cells,sensors,temp1,b77 = struct.unpack_from('>HBBBBBHB', infodata, i)
     temp1 = (temp1-2731)/10
-    temp2 = (temp2-2731)/10			# fet 0011 = 3 both on ; 0010 = 2 disch on ; 0001 = 1 chrg on ; 0000 = 0 both off
+    #temp2 = (temp2-2731)/10			# fet 0011 = 3 both on ; 0010 = 2 disch on ; 0001 = 1 chrg on ; 0000 = 0 both off
     prt = (format(protect, "b").zfill(16))		# protect trigger (0,1)(off,on)
     message1 = {
         "meter": "bms",
@@ -100,8 +100,7 @@ def cellinfo2(data):
         "percent": percent,
         "fet": fet,
         "cells": cells,
-        "temp1": temp1,
-        "temp2": temp2
+        "temp1": temp1
     }
     ret = mqtt.publish(topic, payload=json.dumps(message2), qos=0, retain=False)    # not sending version number or number of temp sensors
 
@@ -145,7 +144,7 @@ class MyDelegate(DefaultDelegate):		    # notification responses
 			cellvolts1(data)
 		elif text_string.find('dd03') != -1:                             # x03
 			cellinfo1(data)
-		elif text_string.find('77') != -1 and len(text_string) == 28 or len(text_string) == 36:	 # x03
+		elif text_string.find('77') != -1 and len(text_string) == 24 or len(text_string) == 36:	 # x03
 			cellinfo2(data)		
 try:
     print('attempting to connect')		
